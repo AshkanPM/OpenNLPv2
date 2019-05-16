@@ -11,6 +11,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
     ArrayList<Offset> coordinates;
     File inputFile;
+    File inputFile2;
     String selectedTag = "Person";
     String selectedColor = "0000FF";
     String selectedId = "1";
@@ -22,6 +23,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         "Button 5:BBBBBB:5",
         "Button 6:BBBBBB:6",        
     };
+    Boolean isDirty = false;
     
 
     public OpenNLPv2() {
@@ -38,6 +40,14 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        aboutDialog = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        exitDialog = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         playground = new javax.swing.JTextPane();
         statusPanel = new javax.swing.JPanel();
@@ -56,7 +66,6 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         btn5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -67,8 +76,115 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        aboutDialog.setTitle("About OpenNLPv2");
+        aboutDialog.setMaximumSize(new java.awt.Dimension(30000, 30000));
+        aboutDialog.setMinimumSize(new java.awt.Dimension(300, 100));
+        aboutDialog.setResizable(false);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/healthsim/info.png"))); // NOI18N
+        jLabel1.setText("    OpenNLPv2 - Feb 2019");
+
+        jButton1.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout aboutDialogLayout = new javax.swing.GroupLayout(aboutDialog.getContentPane());
+        aboutDialog.getContentPane().setLayout(aboutDialogLayout);
+        aboutDialogLayout.setHorizontalGroup(
+            aboutDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        aboutDialogLayout.setVerticalGroup(
+            aboutDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(aboutDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton1))
+                .addContainerGap())
+        );
+
+        aboutDialog.getAccessibleContext().setAccessibleDescription("About");
+
+        exitDialog.setTitle("Are you sure?");
+        exitDialog.setMaximumSize(new java.awt.Dimension(30000, 30000));
+        exitDialog.setMinimumSize(new java.awt.Dimension(340, 140));
+        exitDialog.setResizable(false);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/healthsim/warning.png"))); // NOI18N
+        jLabel2.setText("    You have unsaved changes");
+
+        jButton2.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jButton2.setText("Save and Exit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jButton3.setText("Discard");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jButton4.setText("Cancel");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout exitDialogLayout = new javax.swing.GroupLayout(exitDialog.getContentPane());
+        exitDialog.getContentPane().setLayout(exitDialogLayout);
+        exitDialogLayout.setHorizontalGroup(
+            exitDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exitDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(exitDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(exitDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(78, 78, 78))
+                    .addGroup(exitDialogLayout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        exitDialogLayout.setVerticalGroup(
+            exitDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exitDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGroup(exitDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap())
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("OpenNLP Annotator v2");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         playground.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(playground);
@@ -109,7 +225,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
         fileName.setText("No files selected");
 
-        submit.setText("Submit");
+        submit.setText("Save");
         submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitActionPerformed(evt);
@@ -214,17 +330,23 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("New");
-        jMenu1.add(jMenuItem4);
-
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Open");
         jMenuItem5.setToolTipText("");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setText("Save");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem6);
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -233,6 +355,11 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem8.setText("Exit");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem8);
 
         jMenuBar1.add(jMenu1);
@@ -256,6 +383,11 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         jMenu3.setText("About");
 
         jMenuItem1.setText("About");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem1);
 
         jMenuBar1.add(jMenu3);
@@ -275,10 +407,10 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -289,8 +421,8 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         final JFileChooser fileDialog = new JFileChooser(userDir + "/Desktop");
         int fileStatus = fileDialog.showOpenDialog(this);
         if (fileStatus == JFileChooser.APPROVE_OPTION) {
-            inputFile = fileDialog.getSelectedFile();
-            String inputdata = Util.readData(inputFile.getPath());
+            inputFile2 = fileDialog.getSelectedFile();
+            String inputdata = Util.readData(inputFile2.getPath());
             if (inputdata != null || inputdata != "") {
                 String[] buttons = inputdata.split(",");
                 for (int i = 0; i < buttons.length - 1; i++) {
@@ -379,6 +511,39 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         entityLabel.setText(selectedTag);
         entityLabel.setForeground(Color.decode("0x" + selectedColor));
     }//GEN-LAST:event_btn6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        aboutDialog.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        aboutDialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        jMenuItem8ActionPerformed(null);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        if (isDirty) {
+            exitDialog.setVisible(true);
+        } else {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        submitActionPerformed(null);
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        exitDialog.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
     
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_loadActionPerformed
         coordinates.clear(); // clear the values
@@ -389,10 +554,12 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             inputFile = fileDialog.getSelectedFile();
             fileName.setText(inputFile.getName());
             String inputdata = Util.readData(inputFile.getPath());
-            if (inputdata != null || inputdata != "")
+            if (inputdata != null || inputdata != "") {
                 playground.setText(inputdata);
-            else
+                Util.refreshColor(playground);
+            } else {
                 status.setText("Status: Can't read File");
+            }
             status.setText("Status: File loaded");
         }
     }// GEN-LAST:event_loadActionPerformed
@@ -419,7 +586,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             }
             
             String orgStr = orgText.substring(start, end);
-            String newStr = " <START:" + name.trim().toLowerCase() + "> " + orgStr + " <END> ";
+            String newStr = " <START:" + name.trim().toLowerCase() + ">" + orgStr + "<END> ";
 
             finalData.append(orgText.substring(prev_index, start));
             if (newStr != null)
@@ -430,10 +597,11 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         finalData.append(orgText.substring(prev_index, next_index));
         String finaldata_with_even_spaces = Util.makeEvenSpaces(finalData.toString());
 
-        if (Util.writeData(finaldata_with_even_spaces,
+        if (Util.writeData(finaldata_with_even_spaces.trim(),
                 inputFile.getParent() + File.separator + "Mod_" + inputFile.getName()) != null) {
             System.out.println("Successfuly Written");
             status.setText("Status: Saved to File");
+            isDirty = false;
         } else {
             System.out.println("Error Occured");
             status.setText("Status: Couldn't save File");
@@ -471,6 +639,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
                 Util.refreshColor(playground);
                 Util.colorIt(coordinates, playground, btns);
+                isDirty = true;
             }
         });
 
@@ -512,6 +681,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog aboutDialog;
     private javax.swing.JButton btn1;
     private javax.swing.JButton btn2;
     private javax.swing.JButton btn3;
@@ -519,15 +689,21 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     private javax.swing.JButton btn5;
     private javax.swing.JButton btn6;
     private javax.swing.JLabel entityLabel;
+    private javax.swing.JDialog exitDialog;
     private javax.swing.JLabel fileName;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
