@@ -5,6 +5,8 @@ import java.io.*;
 import javax.swing.*;
 import java.util.*;
 import javax.swing.event.CaretEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.text.Highlighter.Highlight;
 
 public class OpenNLPv2 extends javax.swing.JFrame {
@@ -12,6 +14,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     ArrayList<Offset> coordinates;
     File inputFile;
     File inputFile2;
+    File outputFile = null;
     String selectedTag = "Person";
     String selectedColor = "0000FF";
     String selectedId = "1";
@@ -116,7 +119,6 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         aboutDialog.getAccessibleContext().setAccessibleDescription("About");
 
         exitDialog.setTitle("Are you sure?");
-        exitDialog.setMaximumSize(new java.awt.Dimension(30000, 30000));
         exitDialog.setMinimumSize(new java.awt.Dimension(340, 140));
         exitDialog.setResizable(false);
 
@@ -351,6 +353,11 @@ public class OpenNLPv2 extends javax.swing.JFrame {
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setText("Save As");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem7);
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
@@ -544,6 +551,17 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         exitDialog.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        String userDir = System.getProperty("user.home");
+        final JFileChooser fileDialog = new JFileChooser(userDir + "/Desktop");
+        fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int fileStatus = fileDialog.showSaveDialog(this);
+        if (fileStatus == JFileChooser.APPROVE_OPTION) {
+            outputFile = fileDialog.getSelectedFile();
+            submitActionPerformed(null);
+        }
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
     
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_loadActionPerformed
         coordinates.clear(); // clear the values
@@ -597,14 +615,26 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         finalData.append(orgText.substring(prev_index, next_index));
         String finaldata_with_even_spaces = Util.makeEvenSpaces(finalData.toString());
 
-        if (Util.writeData(finaldata_with_even_spaces.trim(),
-                inputFile.getParent() + File.separator + "Mod_" + inputFile.getName()) != null) {
-            System.out.println("Successfuly Written");
-            status.setText("Status: Saved to File");
-            isDirty = false;
+        if (outputFile != null) {
+            if (Util.writeData(finaldata_with_even_spaces.trim(), outputFile.getPath()) != null) {
+                System.out.println("Successfuly Written");
+                status.setText("Status: Saved to File");
+                isDirty = false;
+            } else {
+                System.out.println("Error Occured");
+                status.setText("Status: Couldn't save File");
+            }
+            outputFile = null;
         } else {
-            System.out.println("Error Occured");
-            status.setText("Status: Couldn't save File");
+            if (Util.writeData(finaldata_with_even_spaces.trim(),
+                    inputFile.getParent() + File.separator + "Mod_" + inputFile.getName()) != null) {
+                System.out.println("Successfuly Written");
+                status.setText("Status: Saved to File");
+                isDirty = false;
+            } else {
+                System.out.println("Error Occured");
+                status.setText("Status: Couldn't save File");
+            }
         }
 
     }// GEN-LAST:event_submitActionPerformed
