@@ -616,7 +616,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         String finaldata_with_even_spaces = Util.makeEvenSpaces(finalData.toString());
 
         if (outputFile != null) {
-            if (Util.writeData(finaldata_with_even_spaces.trim(), outputFile.getPath()) != null) {
+            if (Util.writeData(finaldata_with_even_spaces.trim(), outputFile.getPath() + File.separator + inputFile.getName()) != null) {
                 System.out.println("Successfuly Written");
                 status.setText("Status: Saved to File");
                 isDirty = false;
@@ -627,7 +627,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             outputFile = null;
         } else {
             if (Util.writeData(finaldata_with_even_spaces.trim(),
-                    inputFile.getParent() + File.separator + "Mod_" + inputFile.getName()) != null) {
+                    inputFile.getParent() + File.separator + inputFile.getName()) != null) {
                 System.out.println("Successfuly Written");
                 status.setText("Status: Saved to File");
                 isDirty = false;
