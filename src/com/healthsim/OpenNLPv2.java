@@ -585,7 +585,6 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_submitActionPerformed
         coordinates = Util.removeSingleChar(coordinates);
         String orgText = playground.getText();
-        orgText = orgText.replaceAll("\r", ""); // remove this stupid carriage return
 
         int prev_index = 0, next_index = orgText.length();
         Collections.sort(coordinates);
