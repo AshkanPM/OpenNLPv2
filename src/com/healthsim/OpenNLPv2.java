@@ -27,6 +27,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         "Button 6:BBBBBB:6",        
     };
     Boolean isDirty = false;
+    String cache = "";
     
 
     public OpenNLPv2() {
@@ -67,6 +68,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
         btn4 = new javax.swing.JButton();
         btn6 = new javax.swing.JButton();
         btn5 = new javax.swing.JButton();
+        jCheckBox2 = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -279,6 +281,13 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox2.setText("Show Tags");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -291,21 +300,25 @@ public class OpenNLPv2 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(load, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox2)
+                    .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(load, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jCheckBox1)
-                        .addGap(61, 61, 61)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -316,7 +329,8 @@ public class OpenNLPv2 extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(submit)
-                        .addComponent(jCheckBox1))
+                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBox2))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(load, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -432,10 +446,17 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             String inputdata = Util.readData(inputFile2.getPath());
             if (inputdata != null || inputdata != "") {
                 String[] buttons = inputdata.split(",");
-                for (int i = 0; i < buttons.length - 1; i++) {
+                
+                for (int i = 0; i < buttons.length; i++) {
                     String button = buttons[i];
-                    String name = button.split(":")[0];
-                    String color = button.split(":")[1];
+                    String name = button.split(":")[0].trim();
+                    String color = button.split(":")[1].trim();
+                    
+                    // Comment processing
+                    if (color.contains("#")) {
+                        color = color.substring(0, color.indexOf('#')).trim();
+                    }
+                    
                     int id = i + 1;
                     
                     if (i == 0) {
@@ -562,6 +583,61 @@ public class OpenNLPv2 extends javax.swing.JFrame {
             submitActionPerformed(null);
         }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        if (jCheckBox2.isSelected()) {
+            disableEverything(false);
+            cache = playground.getText();
+            coordinates = Util.removeSingleChar(coordinates);
+            String orgText = playground.getText();
+            
+            int prev_index = 0, next_index = orgText.length();
+            Collections.sort(coordinates);
+            StringBuilder finalData = new StringBuilder();
+
+            for (Offset data : coordinates) {
+                int start = data.getStart();
+                int end = data.getEnd();
+                String id = data.getId();
+                String name = "Person";
+
+                for (String btn : btns) {
+                    if (btn.split(":")[2].equals(id)) {
+                        name = btn.split(":")[0];
+                    }
+                }
+
+                String orgStr = orgText.substring(start, end);
+                String newStr = " <START:" + name.trim().toLowerCase() + ">" + orgStr + "<END> ";
+
+                finalData.append(orgText.substring(prev_index, start));
+                if (newStr != null)
+                    finalData.append(newStr);
+
+                prev_index = end;
+            }
+            finalData.append(orgText.substring(prev_index, next_index));
+            String finaldata_with_even_spaces = Util.makeEvenSpaces(finalData.toString());
+         
+            playground.setText(finaldata_with_even_spaces.trim());
+        } else {
+            playground.setText(cache);
+            Util.refreshColor(playground);
+            Util.colorIt(coordinates, playground, btns);
+            cache = "";
+            disableEverything(true);
+        }
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+    
+    private void disableEverything(Boolean status) {
+        btn1.setEnabled(status);
+        btn2.setEnabled(status);
+        btn3.setEnabled(status);
+        btn4.setEnabled(status);
+        btn5.setEnabled(status);
+        btn6.setEnabled(status);
+        playground.setEnabled(status);
+    }
     
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_loadActionPerformed
         coordinates.clear(); // clear the values
@@ -585,6 +661,9 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_submitActionPerformed
         coordinates = Util.removeSingleChar(coordinates);
         String orgText = playground.getText();
+        if (jCheckBox2.isSelected()) {
+            orgText = cache;
+        }
 
         int prev_index = 0, next_index = orgText.length();
         Collections.sort(coordinates);
@@ -725,6 +804,7 @@ public class OpenNLPv2 extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
